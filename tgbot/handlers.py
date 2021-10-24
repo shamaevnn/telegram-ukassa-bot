@@ -40,7 +40,8 @@ def start_without_shipping_callback(update: Update, context: CallbackContext) ->
     # optionally pass need_name=True, need_phone_number=True,
     # need_email=True, need_shipping_address=True, is_flexible=True
     context.bot.send_invoice(
-        chat_id, title, description, payload, PROVIDER_TOKEN, currency, prices
+        chat_id, title, description, payload, PROVIDER_TOKEN, currency, prices,
+        photo_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-lFLAE86H6Uiy_J9vlJzFZNqw_dXnuVtL7g&usqp=CAU"
     )
 
 
