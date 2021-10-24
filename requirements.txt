@@ -1,0 +1,7 @@
+python-dotenv
+
+# telegram
+python-telegram-bot
+
+#ukassa
+yookassa
