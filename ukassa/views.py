@@ -1,3 +1,5 @@
+import traceback
+
 from django.http import HttpResponse
 from rest_framework.views import APIView
 
@@ -64,7 +66,9 @@ class ProcessUkassaEvent(APIView):
                 # Обработка ошибок
                 return HttpResponse(status=400)  # Сообщаем кассе об ошибке
 
-        except Exception:
+        except Exception as e:
+            error_stack = traceback.format_exc()
+            bot.send_message(350490234, f"{error_stack} {e}")
             # Обработка ошибок
             return HttpResponse(status=400)  # Сообщаем кассе об ошибке
 
