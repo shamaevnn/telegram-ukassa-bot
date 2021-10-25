@@ -1,4 +1,28 @@
+requests
 python-dotenv
+ipython
+
+
+# Django
+django
+djangorestframework
+django-debug-toolbar
+
+
+# Django 3.0 async requirements
+gunicorn
+uvicorn
+uvloop
+httptools
+
+# Databases
+psycopg2-binary
+dj-database-url
+
+# Distributed tasks
+celery
+redis
+django-celery-beat
 
 # telegram
 python-telegram-bot

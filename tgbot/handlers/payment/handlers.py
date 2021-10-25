@@ -1,27 +1,18 @@
 import logging
 
-from telegram import LabeledPrice, ShippingOption, Update
+from telegram import LabeledPrice, Update
 from telegram.ext import (
     CallbackContext,
 )
 
 # Enable logging
-from config import PROVIDER_TOKEN
+from tub.settings import PROVIDER_TOKEN
 
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', level=logging.INFO
 )
 
 logger = logging.getLogger(__name__)
-
-
-def start_callback(update: Update, context: CallbackContext) -> None:
-    """Displays info on how to use the bot."""
-    msg = (
-        "Нажми /test, чтобы протестировать покупку."
-    )
-
-    update.message.reply_text(msg)
 
 
 def start_without_shipping_callback(update: Update, context: CallbackContext) -> None:
@@ -33,7 +24,7 @@ def start_without_shipping_callback(update: Update, context: CallbackContext) ->
     payload = "Custom-Payload"
     currency = "RUB"
     # price in dollars
-    price = 100
+    price = 70
     # price * 100 so as to include 2 decimal points
     prices = [LabeledPrice("Подписка 5", price * 100)]
 
@@ -61,4 +52,5 @@ def precheckout_callback(update: Update, context: CallbackContext) -> None:
 def successful_payment_callback(update: Update, context: CallbackContext) -> None:
     """Confirms the successful payment."""
     # do something after successfully receiving payment?
+    logger.info(update)
     update.message.reply_text("Спасибо за покупку!")

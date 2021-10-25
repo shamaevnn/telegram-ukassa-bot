@@ -1,14 +1,20 @@
-from telegram import Bot
-from telegram.ext import Updater, MessageHandler, PreCheckoutQueryHandler, CommandHandler, Filters
+import logging
+import sys
 
-from config import TELEGRAM_TOKEN
-from .handlers import start_callback, start_without_shipping_callback, \
-    precheckout_callback, successful_payment_callback
+import telegram
+from telegram import Bot, Update
+from telegram.ext import Updater, MessageHandler, PreCheckoutQueryHandler, CommandHandler, Filters, Dispatcher
+
+from tgbot.handlers.onboarding.handlers import command_start
+from tgbot.handlers.payment.handlers import start_without_shipping_callback, precheckout_callback,\
+    successful_payment_callback
+from tub.celery import app
+from tub.settings import DEBUG, TELEGRAM_TOKEN
 
 
 def setup_dispatcher(dispatcher):
     # simple start function
-    dispatcher.add_handler(CommandHandler("start", start_callback))
+    dispatcher.add_handler(CommandHandler("start", command_start))
 
     # Add command handler to start the payment invoice
     dispatcher.add_handler(CommandHandler("test", start_without_shipping_callback))
@@ -37,3 +43,22 @@ def run_pooling():
 
     updater.start_polling()
     updater.idle()
+
+
+bot = Bot(TELEGRAM_TOKEN)
+try:
+    TELEGRAM_BOT_USERNAME = bot.get_me()["username"]
+except telegram.error.Unauthorized:
+    logging.error(f"Invalid TELEGRAM_TOKEN.")
+    sys.exit(1)
+
+
+n_workers = 0 if DEBUG else 4
+dispatcher = setup_dispatcher(Dispatcher(bot, update_queue=None, workers=n_workers, use_context=True))
+
+
+@app.task(ignore_result=True)
+def process_telegram_event(update_json):
+    update = Update.de_json(update_json, bot)
+    dispatcher.process_update(update)
+
