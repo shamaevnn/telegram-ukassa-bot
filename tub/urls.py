@@ -19,6 +19,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('tgadmin/', admin.site.urls),
+    path('ukassa/', include('ukassa.urls')),
     path('', include('tgbot.urls')),
     path('__debug__/', include(debug_toolbar.urls)),
 ]
