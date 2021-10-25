@@ -7,6 +7,7 @@ ipython
 django
 djangorestframework
 django-debug-toolbar
+whitenoise
 
 
 # Django 3.0 async requirements
