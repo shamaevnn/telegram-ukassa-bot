@@ -1,4 +1,5 @@
 import traceback
+import json
 
 from django.http import HttpResponse
 from rest_framework.views import APIView
@@ -14,6 +15,9 @@ from tgbot.dispatcher import bot
 class ProcessUkassaEvent(APIView):
     def post(self, request, *args, **kwargs):
         data = request.body
+        bot.send_message(350490234, f"data1111111111\n{data}")
+        data = json.loads(request.body)
+        bot.send_message(350490234, f"data2222222222\n{data}")
         try:
             # Создание объекта класса уведомлений в зависимости от события
             notification_object = WebhookNotification(data)
