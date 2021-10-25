@@ -10,12 +10,11 @@ from yookassa import Configuration, Payment
 from yookassa.domain.notification import WebhookNotification, WebhookNotificationEventType
 
 from tgbot.dispatcher import bot
+from tub.settings import UKASSA_SECRET_KEY
 
 
 class ProcessUkassaEvent(APIView):
     def post(self, request, *args, **kwargs):
-        data = request.body
-        bot.send_message(350490234, f"data1111111111\n{data}")
         data = json.loads(request.body)
         bot.send_message(350490234, f"data2222222222\n{data}")
         try:
@@ -58,7 +57,7 @@ class ProcessUkassaEvent(APIView):
 
             # Специфичная логика
             # ...
-            Configuration.configure('845479', 'test_XXXXXXXX')
+            Configuration.configure('845479', UKASSA_SECRET_KEY)
             # Получим актуальную информацию о платеже
             payment_info = Payment.find_one(some_data['paymentId'])
             bot.send_message(350490234, f"payment_info:\n{payment_info}")
