@@ -12,18 +12,20 @@ from tub.celery import app
 from tub.settings import DEBUG, TELEGRAM_TOKEN
 
 
-def setup_dispatcher(dispatcher):
+def setup_dispatcher(dp):
     # simple start function
-    dispatcher.add_handler(CommandHandler("start", command_start))
+    dp.add_handler(CommandHandler("start", command_start))
 
     # Add command handler to start the payment invoice
-    dispatcher.add_handler(CommandHandler("test", start_without_shipping_callback))
+    dp.add_handler(CommandHandler("test", start_without_shipping_callback))
 
     # Pre-checkout handler to final check
-    dispatcher.add_handler(PreCheckoutQueryHandler(precheckout_callback))
+    dp.add_handler(PreCheckoutQueryHandler(precheckout_callback))
 
     # Success! Notify your user!
-    dispatcher.add_handler(MessageHandler(Filters.successful_payment, successful_payment_callback))
+    dp.add_handler(MessageHandler(Filters.successful_payment, successful_payment_callback))
+
+    return dp
 
 
 def run_pooling():
@@ -53,12 +55,10 @@ except telegram.error.Unauthorized:
     sys.exit(1)
 
 
-n_workers = 0 if DEBUG else 4
-dispatcher = setup_dispatcher(Dispatcher(bot, update_queue=None, workers=n_workers, use_context=True))
-
-
 @app.task(ignore_result=True)
 def process_telegram_event(update_json):
     update = Update.de_json(update_json, bot)
-    dispatcher.process_update(update)
+    dispatcher_bot.process_update(update)
 
+
+dispatcher_bot = setup_dispatcher(Dispatcher(bot, None, workers=0, use_context=True))
