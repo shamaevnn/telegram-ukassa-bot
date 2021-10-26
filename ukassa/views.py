@@ -13,6 +13,9 @@ from tgbot.dispatcher import bot
 from tub.settings import UKASSA_SECRET_KEY, SHOP_ID
 
 
+Configuration.configure(SHOP_ID, UKASSA_SECRET_KEY)
+
+
 class ProcessUkassaEvent(APIView):
     def post(self, request, *args, **kwargs):
         data = json.loads(request.body)
@@ -57,7 +60,6 @@ class ProcessUkassaEvent(APIView):
 
             # Специфичная логика
             # ...
-            Configuration.configure(SHOP_ID, UKASSA_SECRET_KEY)
             # Получим актуальную информацию о платеже
             payment_info = Payment.find_one(some_data['paymentId'])
             bot.send_message(350490234, f"payment_info:\n{payment_info}")
