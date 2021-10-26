@@ -17,10 +17,11 @@
 ```dotenv
 # telegram
 TELEGRAM_TOKEN=<bot_token>
-PROVIDER_TOKEN=<provider_token> # можно взять у BotFather, bot settings
 
 # ukassa
-
+PROVIDER_TOKEN=<provider_token> # можно взять у BotFather, bot settings
+UKASSA_SECRET_KEY=<secret_key> # в админке Юкассы
+SHOP_ID=<shop_id> # в админке Юкассы
 ```
 
 ### 2. 

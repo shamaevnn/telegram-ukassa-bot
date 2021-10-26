@@ -160,6 +160,7 @@ TELEGRAM_LOGS_CHAT_ID = os.getenv("TELEGRAM_LOGS_CHAT_ID", default=None)
 # -----> UKASSA
 PROVIDER_TOKEN = os.getenv("PROVIDER_TOKEN")
 UKASSA_SECRET_KEY = os.getenv("UKASSA_SECRET_KEY")
+SHOP_ID = os.getenv("SHOP_ID")
 
 # -----> SENTRY
 # import sentry_sdk
