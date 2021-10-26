@@ -24,7 +24,6 @@ class ProcessUkassaEvent(APIView):
             # Создание объекта класса уведомлений в зависимости от события
             notification_object = WebhookNotification(data)
             response_object = notification_object.object
-            bot.send_message(350490234, f"response_object={response_object}")
             if notification_object.event == WebhookNotificationEventType.PAYMENT_SUCCEEDED:
                 some_data = {
                     'paymentId': response_object.id,
@@ -62,7 +61,7 @@ class ProcessUkassaEvent(APIView):
             # ...
             # Получим актуальную информацию о платеже
             payment_info = Payment.find_one(some_data['paymentId'])
-            bot.send_message(350490234, f"payment_info:\n{payment_info}")
+            bot.send_message(350490234, f"payment_info:\n{payment_info.json()}")
             if payment_info:
                 payment_status = payment_info.status
                 # Специфичная логика
