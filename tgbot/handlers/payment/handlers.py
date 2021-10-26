@@ -33,6 +33,9 @@ def start_without_shipping_callback(update: Update, context: CallbackContext) ->
     provider_data = {
         "save_payment_method": True,
         "capture": True,
+        "payment_method_data": {
+            "type": "bank_card",
+        },
     }
     context.bot.send_invoice(
         chat_id, title, description, payload, PROVIDER_TOKEN, currency, prices,
