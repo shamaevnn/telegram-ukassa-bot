@@ -10,7 +10,7 @@ from yookassa import Configuration, Payment
 from yookassa.domain.notification import WebhookNotification, WebhookNotificationEventType
 
 from tgbot.dispatcher import bot
-from tub.settings import UKASSA_SECRET_KEY
+from tub.settings import UKASSA_SECRET_KEY, SHOP_ID
 
 
 class ProcessUkassaEvent(APIView):
@@ -34,8 +34,8 @@ class ProcessUkassaEvent(APIView):
                     'paymentId': response_object.id,
                     'paymentStatus': response_object.status,
                 }
-                # Специфичная логика
-                # ...
+
+                Payment.capture(payment_id=some_data['paymentId'])  # принимаем платеж
             elif notification_object.event == WebhookNotificationEventType.PAYMENT_CANCELED:
                 some_data = {
                     'paymentId': response_object.id,
@@ -57,7 +57,7 @@ class ProcessUkassaEvent(APIView):
 
             # Специфичная логика
             # ...
-            Configuration.configure('845479', UKASSA_SECRET_KEY)
+            Configuration.configure(SHOP_ID, UKASSA_SECRET_KEY)
             # Получим актуальную информацию о платеже
             payment_info = Payment.find_one(some_data['paymentId'])
             bot.send_message(350490234, f"payment_info:\n{payment_info}")
