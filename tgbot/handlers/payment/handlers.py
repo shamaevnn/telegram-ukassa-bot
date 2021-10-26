@@ -32,7 +32,7 @@ def start_without_shipping_callback(update: Update, context: CallbackContext) ->
     # need_email=True, need_shipping_address=True, is_flexible=True
     provider_data = {
         "save_payment_method": True,
-        "capture": True,
+        # "capture": True,
         "payment_method_data": {
             "type": "bank_card",
         },
